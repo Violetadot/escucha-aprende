@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escucha y Aprende - Pódcast Educativo</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+</head>
+<body>
+    <!-- Header con navegación -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <i class="fas fa-headphones"></i>
+                <span>Escucha y Aprende</span>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#episodios" class="nav-link">Episodios</a></li>
+                <li><a href="#buscar" class="nav-link">Buscar</a></li>
+                <li><a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a></li>
+                <li><a href="#apoyo" class="nav-link">Apóyanos</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Página de Inicio -->
+    <section id="inicio" class="page active">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Escucha y Aprende</h1>
+                </div>
+                <p class="hero-subtitle">Aprende escuchando. Episodios educativos para estudiantes curiosos.</p>
+                
+                <div class="featured-episode">
+<h3>Episodio Destacado</h3>
+<div class="episode-card featured">
+    <h4>Epistemología, Verdad y Filosofía de la Ciencia</h4>
+    <p class="episode-meta">Filosofía • Bachillerato • 7 min</p>
+    <div class="audio-player">
+        <button class="play-btn" onclick="togglePlay('audio1')">
+            <i class="fas fa-play"></i>
+        </button>
+        <audio id="audio1" preload="none">
+            <source src="assets/audio/epistemologia-filosofia-bachillerato.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio HTML5.
+        </audio>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <span class="time">0:00 / 7:17</span>
+    </div>
+    <p class="episode-preview">
+        Exploramos los fundamentos de la epistemología y el papel de la verdad en la ciencia.
+        ¿Qué significa saber algo? ¿Cómo distinguimos entre creencia y conocimiento?
+    </p>
+</div>
+
+                    
+
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="showPage('buscar')">
+                        <i class="fas fa-search"></i> Buscar por Temas
+                    </button>
+                    <button class="btn btn-secondary" onclick="showPage('apoyo')">
+                        <i class="fas fa-heart"></i> Apóyanos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Página de Episodios -->
+    <section id="episodios" class="page">
+        <div class="container">
+            <h2>Todos los Episodios</h2>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Nivel:</label>
+                    <select id="nivel-filter">
+                        <option value="">Todos</option>
+                        <option value="primaria">Primaria</option>
+                        <option value="bachillerato">Bachillerato</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Categoría:</label>
+                    <select id="categoria-filter">
+                        <option value="">Todas</option>
+                        <option value="ciencia">Ciencia</option>
+                        <option value="historia">Historia</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="actualidad">Actualidad</option>
+                        <option value="cultura">Cultura Digital</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="episodes-grid" id="episodes-list">
+                <!-- Los episodios se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Página de Búsqueda -->
+    <section id="buscar" class="page">
+        <div class="container">
+            <h2>Buscar Episodios</h2>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Busca por tema, palabra clave... ej. 'revolución francesa'">
+                <button onclick="searchEpisodes()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-results" id="search-results">
+                <p>Introduce una palabra clave para buscar episodios relacionados.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Página Individual de Episodio -->
+    <section id="episodio-individual" class="page">
+        <div class="container">
+            <button class="back-btn" onclick="showPage('episodios')">
+                <i class="fas fa-arrow-left"></i> Volver a Episodios
+            </button>
+            <div class="episode-detail" id="episode-detail">
+                <!-- El contenido se cargará dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Página Sobre Nosotros -->
+    <section id="sobre-nosotros" class="page">
+        <div class="container">
+            <h2>Sobre el Proyecto</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Nuestro Objetivo</h3>
+                    <p>Escucha y Aprende nace con la misión de hacer el aprendizaje más accesible y entretenido para estudiantes de primaria y bachillerato. Creemos que el audio es una herramienta poderosa para el aprendizaje, especialmente en temas actuales que conectan con la realidad de los jóvenes.</p>
+                    
+                    <h3>¿Quién Crea el Contenido?</h3>
+                    <p>Nuestro equipo está formado por educadores, comunicadores y especialistas en diferentes áreas del conocimiento. Cada episodio es cuidadosamente investigado y adaptado al nivel educativo correspondiente.</p>
+                    
+                    <h3>Valores Educativos</h3>
+                    <ul>
+                        <li><strong>Accesibilidad:</strong> Contenido gratuito y disponible para todos</li>
+                        <li><strong>Calidad:</strong> Información verificada y pedagogicamente estructurada</li>
+                        <li><strong>Actualidad:</strong> Temas relevantes que conectan con el presente</li>
+                        <li><strong>Inclusión:</strong> Diversidad de perspectivas y voces</li>
+                    </ul>
+                    
+                    <h3>Contacto</h3>
+                    <p>Email: escuchayaprende@gmail.com</p>
+                    <p>Síguenos en redes sociales para estar al día con nuevos episodios.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Página de Apoyo -->
+    <section id="apoyo" class="page">
+        <div class="container">
+            <h2>Apoya Nuestro Proyecto</h2>
+            <div class="support-content">
+                <div class="support-text">
+                    <h3>¿Por qué necesitamos tu apoyo?</h3>
+                    <p>Crear contenido educativo de calidad requiere tiempo, investigación y recursos. Tu apoyo nos permite mantener el contenido gratuito y continuar creando nuevos episodios.</p>
+                </div>
+                
+                <div class="support-options">
+                    <div class="support-card">
+                        <h4><i class="fas fa-heart"></i> Donación Voluntaria</h4>
+                        <p>Cualquier cantidad nos ayuda a seguir adelante.</p>
+                        <div class="donation-amounts">
+                            <button class="donation-btn" onclick="donate(5)">5€</button>
+                            <button class="donation-btn" onclick="donate(10)">10€</button>
+                            <button class="donation-btn" onclick="donate(20)">20€</button>
+                            <input type="number" placeholder="Otra cantidad" id="custom-amount">
+                            <button class="btn btn-primary" onclick="customDonate()">Donar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="support-card">
+                        <h4><i class="fas fa-star"></i> Suscripción Mensual</h4>
+                        <p>Apoyo recurrente para un impacto constante.</p>
+                        <div class="subscription-options">
+                            <button class="btn btn-secondary">5€/mes</button>
+                            <button class="btn btn-secondary">10€/mes</button>
+                            <button class="btn btn-secondary">15€/mes</button>
+                        </div>
+                    </div>
+                    
+                    <div class="support-card">
+                        <h4><i class="fas fa-graduation-cap"></i> Packs Educativos</h4>
+                        <p>Materiales complementarios para educadores.</p>
+                        <div class="packs">
+                            <div class="pack">
+                                <strong>Pack Ciencia</strong> - 25€
+                                <p>Guías didácticas + actividades + transcripciones</p>
+                                <button class="btn btn-outline">Comprar</button>
+                            </div>
+                            <div class="pack">
+                                <strong>Pack Historia</strong> - 25€
+                                <p>Líneas de tiempo + mapas + recursos adicionales</p>
+                                <button class="btn btn-outline">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Página de Contacto -->
+    <section id="contacto" class="page">
+        <div class="container">
+            <h2>Contacto</h2>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensaje:</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> info@escuchayaprende.com</p>
+                    <p><i class="fas fa-phone"></i> +34 600 123 456</p>
+                    
+                    <h4>Síguenos en Redes Sociales</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-spotify"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Escucha y Aprende</h4>
+                    <p>Educación de calidad al alcance de todos</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#episodios">Episodios</a></li>
+                        <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPrivacyPolicy()">Política de Privacidad</a></li>
+                        <li><a href="#" onclick="showCookiePolicy()">Política de Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Escucha y Aprende. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para políticas -->
+    <div id="policy-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="policy-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de episodios de ejemplo
+        const episodes = [
+            {
+    id: 5,
+    title: "Epistemología, Verdad y Filosofía de la Ciencia",
+    category: "filosofia",
+    level: "bachillerato",
+    duration: "7:17",
+    date: "2025-06-02",
+    description: "Exploramos los fundamentos de la epistemología y el papel de la verdad en la ciencia. ¿Qué significa saber algo? ¿Cómo distinguimos entre creencia y conocimiento?",
+    keywords: ["epistemología", "verdad", "ciencia", "filosofía"],
+    audioUrl: "assets/audio/epistemologia-filosofia-bachillerato.mp3",
+    transcript: "En este episodio reflexionamos sobre el conocimiento, la verdad y el método científico como herramientas clave en la comprensión del mundo..."
+},
+
+            {
+                id: 1,
+                title: "El Cambio Climático: ¿Qué podemos hacer?",
+                category: "ciencia",
+                level: "bachillerato",
+                duration: "15:23",
+                date: "2025-05-28",
+                description: "Descubre las causas del cambio climático y acciones concretas que puedes tomar para ayudar al planeta. Analizamos datos científicos actuales y soluciones innovadoras.",
+                keywords: ["cambio climático", "medioambiente", "sostenibilidad", "ecología"],
+                audioUrl: "assets/audio/episodio1.mp3",
+                transcript: "En este episodio exploramos el cambio climático desde una perspectiva científica y práctica..."
+            },
+            {
+                id: 2,
+                title: "La Revolución Francesa: Causas y Consecuencias",
+                category: "historia",
+                level: "bachillerato",
+                duration: "18:45",
+                date: "2025-05-25",
+                description: "Un viaje por los acontecimientos que cambiaron Francia y Europa para siempre. Desde las causas económicas hasta las consecuencias políticas.",
+                keywords: ["revolución francesa", "historia", "política", "sociedad", "siglo XVIII"],
+                audioUrl: "assets/audio/episodio2.mp3",
+                transcript: "La Revolución Francesa marcó un antes y un después en la historia mundial..."
+            },
+            {
+                id: 3,
+                title: "Introducción a la Inteligencia Artificial",
+                category: "tecnologia",
+                level: "bachillerato",
+                duration: "12:30",
+                date: "2025-05-22",
+                description: "¿Qué es realmente la inteligencia artificial? Exploramos conceptos básicos, aplicaciones actuales y el futuro de esta tecnología.",
+                keywords: ["inteligencia artificial", "tecnología", "algoritmos", "futuro", "innovación"],
+                audioUrl: "assets/audio/episodio3.mp3",
+                transcript: "La inteligencia artificial está transformando nuestro mundo..."
+            },
+            {
+                id: 4,
+                title: "El Sistema Solar para Principiantes",
+                category: "ciencia",
+                level: "primaria",
+                duration: "10:15",
+                date: "2025-05-20",
+                description: "Un viaje fascinante por nuestro sistema solar. Conoce los planetas, sus características y curiosidades que te sorprenderán.",
+                keywords: ["sistema solar", "planetas", "astronomía", "espacio", "ciencia"],
+                audioUrl: "assets/audio/episodio4.mp3",
+                transcript: "Nuestro sistema solar es un lugar increíble lleno de maravillas..."
+            }
+        ];
+
+        // Estado de la aplicación
+        let currentPage = 'inicio';
+        let filteredEpisodes = episodes;
+        let currentAudio = null;
+
+        // Navegación
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            currentPage = pageId;
+            
+            // Actualizar navegación activa
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[href="#${pageId}"]`)?.classList.add('active');
+
+            // Cargar contenido específico de la página
+            if (pageId === 'episodios') {
+                loadEpisodes();
+            }
+        }
+
+        // Toggle menú móvil
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-menu').classList.toggle('active');
+        });
+
+        // Enlaces de navegación
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('href').substring(1);
+                showPage(pageId);
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+
+        // Cargar episodios
+        function loadEpisodes() {
+            const episodesList = document.getElementById('episodes-list');
+            episodesList.innerHTML = '';
+            
+            filteredEpisodes.forEach(episode => {
+                const episodeCard = createEpisodeCard(episode);
+                episodesList.appendChild(episodeCard);
+            });
+        }
+
+        // Crear tarjeta de episodio
+        function createEpisodeCard(episode) {
+            const div = document.createElement('div');
+            div.className = 'episode-card';
+            div.innerHTML = `
+                <h4>${episode.title}</h4>
+                <p class="episode-meta">${episode.category.charAt(0).toUpperCase() + episode.category.slice(1)} • ${episode.level.charAt(0).toUpperCase() + episode.level.slice(1)} • ${episode.duration}</p>
+                <p class="episode-date">${formatDate(episode.date)}</p>
+                <p class="episode-description">${episode.description}</p>
+                <div class="episode-actions">
+                    <button class="btn btn-primary" onclick="playEpisode(${episode.id})">
+                        <i class="fas fa-play"></i> Escuchar
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadEpisode(${episode.id})">
+                        <i class="fas fa-download"></i> Descargar
+                    </button>
+                    <button class="btn btn-outline" onclick="showEpisodeDetail(${episode.id})">
+                        Ver Detalles
+                    </button>
+                </div>
+            `;
+            return div;
+        }
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Filtros
+        document.getElementById('nivel-filter').addEventListener('change', function() {
+            filterEpisodes();
+        });
+
+        document.getElementById('categoria-filter').addEventListener('change', function() {
+            filterEpisodes();
+        });
+
+        function filterEpisodes() {
+            const nivelFilter = document.getElementById('nivel-filter').value;
+            const categoriaFilter = document.getElementById('categoria-filter').value;
+            
+            filteredEpisodes = episodes.filter(episode => {
+                const matchesNivel = !nivelFilter || episode.level === nivelFilter;
+                const matchesCategoria = !categoriaFilter || episode.category === categoriaFilter;
+                return matchesNivel && matchesCategoria;
+            });
+            
+            loadEpisodes();
+        }
+
+        // Búsqueda
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchEpisodes();
+            }
+        });
+
+        function searchEpisodes() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (!query.trim()) {
+                resultsContainer.innerHTML = '<p>Introduce una palabra clave para buscar episodios relacionados.</p>';
+                return;
+            }
+            
+            const results = episodes.filter(episode => {
+                return episode.title.toLowerCase().includes(query) ||
+                       episode.description.toLowerCase().includes(query) ||
+                       episode.keywords.some(keyword => keyword.toLowerCase().includes(query));
+            });
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p>No se encontraron episodios relacionados con tu búsqueda.</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = '<h3>Resultados de búsqueda:</h3>';
+            results.forEach(episode => {
+                const episodeCard = createEpisodeCard(episode);
+                resultsContainer.appendChild(episodeCard);
+            });
+        }
+
+        // Reproductor de audio
+        function togglePlay(audioId) {
+            const audio = document.getElementById(audioId);
+            const playBtn = audio.previousElementSibling;
+            
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                currentAudio = audio;
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                currentAudio = null;
+            }
+        }
+
+        function playEpisode(episodeId) {
+            const episode = episodes.find(ep => ep.id === episodeId);
+            showEpisodeDetail(episodeId);
+        }
+
+        function downloadEpisode(episodeId) {
+            const episode = episodes.find(ep => ep.id === episodeId);
+            // Simular descarga
+            alert(`Descargando: ${episode.title}`);
+        }
+
+        // Mostrar detalle del episodio
+        function showEpisodeDetail(episodeId) {
+            const episode = episodes.find(ep => ep.id === episodeId);
+            const detailContainer = document.getElementById('episode-detail');
+            
+            detailContainer.innerHTML = `
+                <div class="episode-header">
+                    <h2>${episode.title}</h2>
+                    <p class="episode-meta">${episode.category.charAt(0).toUpperCase() + episode.category.slice(1)} • ${episode.level.charAt(0).toUpperCase() + episode.level.slice(1)} • ${episode.duration}</p>
+                    <p class="episode-date">Publicado el ${formatDate(episode.date)}</p>
+                </div>
+                
+                <div class="audio-player-full">
+                    <button class="play-btn" onclick="togglePlay('audio-detail')">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <audio id="audio-detail" preload="metadata">
+                        <source src="${episode.audioUrl}" type="audio/mpeg">
+                        Tu navegador no soporta audio HTML5.
+                    </audio>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <span class="time">0:00 / ${episode.duration}</span>
+                </div>
+                
+                <div class="episode-actions">
+                    <button class="btn btn-secondary" onclick="downloadEpisode(${episode.id})">
+                        <i class="fas fa-download"></i> Descargar MP3
+                    </button>
+                    <button class="btn btn-outline" onclick="shareEpisode(${episode.id})">
+                        <i class="fas fa-share"></i> Compartir
+                    </button>
+                </div>
+                
+                <div class="episode-content">
+                    <h3>Descripción</h3>
+                    <p>${episode.description}</p>
+                    
+                    <h3>Transcripción</h3>
+                    <div class="transcript">
+                        <p>${episode.transcript}</p>
+                        <p><em>Nota: Esta es una transcripción parcial del episodio.</em></p>
+                    </div>
+                </div>
+            `;
+            
+            showPage('episodio-individual');
+        }
+
+        function shareEpisode(episodeId) {
+            const episode = episodes.find(ep => ep.id === episodeId);
+            const url = `${window.location.origin}#episodio/${episodeId}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: episode.title,
+                    text: episode.description,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url);
+                alert('¡Enlace copiado al portapapeles!');
+            }
+        }
+
+        // Formulario de contacto
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Simular envío
+            alert('¡Mensaje enviado correctamente! Te responderemos pronto.');
+            this.reset();
+        });
+
+        // Donaciones
+        function donate(amount) {
+            alert(`¡Gracias por tu donación de ${amount}€! Redirigiendo al procesador de pagos...`);
+        }
+
+        function customDonate() {
+            const amount = document.getElementById('custom-amount').value;
+            if (amount && amount > 0) {
+                donate(amount);
+            } else {
+                alert('Por favor, introduce una cantidad válida.');
+            }
+        }
+
+        // Modales de políticas
+        function showPrivacyPolicy() {
+            const content = `
+                <h2>Política de Privacidad</h2>
+                <p>En Escucha y Aprende respetamos tu privacidad y nos comprometemos a proteger tus datos personales.</p>
+                <h3>Información que recopilamos</h3>
+                <ul>
+                    <li>Datos de contacto cuando nos escribes</li>
+                    <li>Información de uso del sitio web (analytics)</li>
+                    <li>Preferencias de contenido</li>
+                </ul>
+                <h3>Cómo usamos tu información</h3>
+                <ul>
+                    <li>Para responder a tus consultas</li>
+                    <li>Para mejorar nuestro contenido</li>
+                    <li>Para enviar actualizaciones (solo si lo solicitas)</li>
+                </ul>
+                <p>No compartimos tu información personal con terceros sin tu consentimiento explícito.</p>
+            `;
+            showModal(content);
+        }
+
+        function showCookiePolicy() {
+            const content = `
+                <h2>Política de Cookies</h2>
+                <p>Utilizamos cookies para mejorar tu experiencia en nuestro sitio web.</p>
+                <h3>Tipos de cookies que utilizamos</h3>
+                <ul>
+                    <li><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico del sitio</li>
+                    <li><strong>Cookies de análisis:</strong> Para entender cómo interactúas con nuestro contenido</li>
+                    <li><strong>Cookies de preferencias:</strong> Para recordar tus configuraciones</li>
+                </ul>
+                <h3>Control de cookies</h3>
+                <p>Puedes controlar y eliminar cookies a través de la configuración de tu navegador.</p>
+            `;
+            showModal(content);
+        }
+
+        function showModal(content) {
+            document.getElementById('policy-content').innerHTML = content;
+            document.getElementById('policy-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('policy-modal').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('policy-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('inicio');
+        });
+    </script>
+
+    <style>
+        /* Reset y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f
+    <script src="scripts.js"></script>
+</body>
+</html>
